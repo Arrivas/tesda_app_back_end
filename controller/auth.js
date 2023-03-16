@@ -32,8 +32,8 @@ router.post("/login", async (req, res) => {
       const auth = await bcrypt.compare(password, user.password);
       if (auth) {
         const token = createToken(user._id);
-        res.cokie("jwt", token, { httpOnly: false });
-        return res.status(200).json({ message: "Logged in", user, token });
+        // message: "Logged in", user,
+        return res.status(200).json({ token });
       }
       res.status(400).json({ message: "invalid credentials" });
     } else {
