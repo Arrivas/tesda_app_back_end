@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
-const Auth = require("../models/authModel");
 const bcrypt = require("bcrypt");
 
 // create token
@@ -17,7 +16,7 @@ router.post("/create", async (req, res) => {
       const user = await User.create(req.body);
       // add the token
       const token = createToken(user._id);
-      return res.json({ message: "user created", user, token });
+      return res.json({ message: "user created", userData: user, token });
     }
     res.status(500).json({ message: "username already exists" });
   });
@@ -33,7 +32,7 @@ router.post("/login", async (req, res) => {
       if (auth) {
         const token = createToken(user._id);
         // message: "Logged in", user,
-        return res.status(200).json({ token });
+        return res.status(200).json({ token, message: "Logged in", user });
       }
       res.status(400).json({ message: "invalid credentials" });
     } else {
