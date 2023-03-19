@@ -10,12 +10,16 @@ app.use(cors());
 // routes
 const userRoute = require("../controller/user");
 const authRoute = require("../controller/auth");
+const borrowRoute = require("../controller/borrow");
 
 // user
 app.use("/user", userRoute);
 
 // auth
 app.use("/auth", authRoute);
+
+// borrow
+app.use("/borrow", borrowRoute);
 
 app.get("/", (req, res) => {
   res.json("hello from tesda back-end");

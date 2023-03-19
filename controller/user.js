@@ -4,7 +4,7 @@ const User = require("../models/userModel");
 // get all user
 router.get("/get/all", async (req, res) => {
   try {
-    const user = await User.find();
+    const user = await User.find({});
     res.json(user);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -24,10 +24,10 @@ router.get("/get/:id", async (req, res) => {
 // update user
 router.put("/update/:id", async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.id);
-    res.json({ message: "user updated", user });
+    const user = await User.findByIdAndUpdate(req.params.id, req.body);
+    return res.json({ message: "user updated", user });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 });
 
