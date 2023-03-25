@@ -11,13 +11,23 @@ router.get("/get/all", async (req, res) => {
 });
 
 router.post("/new", async (req, res) => {
-  const newBorrow = new Borrow(req.body);
   try {
-    await newBorrow.save();
-    res.status(200).json(newBorrow);
+    const newBorrow = await Borrow.create(req.body);
+    res.json(newBorrow);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+  // Borrow.find({ propertyNo: newBorrow.propertyNo })
+  //   .exec()
+  //   .then(async (data) => {
+  //     if (data.length > 0)
+  //       return res.status(400).json({
+  //         message: `property no. ${newBorrow.propertyNo} already exists in the database`,
+  //       });
+  //     await newBorrow.save();
+  //     return res.status(200).json(newBorrow);
+  //   })
+  //   .catch((error) => res.status(500).json({ message: error.message }));
 });
 
 router.put("/update", async (req, res) => {
@@ -29,10 +39,21 @@ router.put("/update", async (req, res) => {
   }
 });
 
-router.delete("/deleted/:id", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     await Borrow.findByIdAndDelete(req.params.id);
     res.json({ message: "borrow deleted" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.post("/delete/multiple", async (req, res) => {
+  try {
+    await Borrow.deleteMany({
+      _id: { $in: req.body.toDelete },
+    });
+    res.json({ message: "successfully deleted" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

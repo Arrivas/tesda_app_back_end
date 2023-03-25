@@ -14,6 +14,10 @@ const borrowSchema = new Schema(
       type: String,
       required: [true, "receivedBy is a required field"],
     },
+    isBorrowed: {
+      type: Boolean,
+      required: [true, "isBorrowed is a required field"],
+    },
   },
   {
     collection: "borrow",
