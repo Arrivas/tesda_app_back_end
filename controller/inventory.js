@@ -1,17 +1,17 @@
 const router = require("express").Router();
-const Borrow = require("../models/borrowModel");
+const Inventory = require("../models/inventoryModel");
 
 router.get("/get/all", async (req, res) => {
   try {
-    const borrowAll = await Borrow.find({});
-    res.json(borrowAll);
+    const inventoryAll = await Inventory.find({});
+    res.json(inventoryAll);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
 router.get("/get/one/:id", async (req, res) => {
-  Borrow.findById(req.params.id)
+  Inventory.findById(req.params.id)
     .exec()
     .then(async (data) => {
       return res.status(200).json(data);
@@ -21,28 +21,17 @@ router.get("/get/one/:id", async (req, res) => {
 
 router.post("/new", async (req, res) => {
   try {
-    const newBorrow = await Borrow.create(req.body);
-    res.json(newBorrow);
+    const newInventory = await Inventory.create(req.body);
+    res.json(newInventory);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-  // Borrow.find({ propertyNo: newBorrow.propertyNo })
-  //   .exec()
-  //   .then(async (data) => {
-  //     if (data.length > 0)
-  //       return res.status(400).json({
-  //         message: `property no. ${newBorrow.propertyNo} already exists in the database`,
-  //       });
-  //     await newBorrow.save();
-  //     return res.status(200).json(newBorrow);
-  //   })
-  //   .catch((error) => res.status(500).json({ message: error.message }));
 });
 
 router.put("/update/:id", async (req, res) => {
-  const borrow = await Borrow.findByIdAndUpdate(req.params.id, req.body);
+  const inventory = await Inventory.findByIdAndUpdate(req.params.id, req.body);
   try {
-    return res.json({ message: "updated", borrow });
+    return res.json({ message: "updated", inventory });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -50,7 +39,7 @@ router.put("/update/:id", async (req, res) => {
 
 router.delete("/delete/:id", async (req, res) => {
   try {
-    await Borrow.findByIdAndDelete(req.params.id);
+    await Inventory.findByIdAndDelete(req.params.id);
     res.json({ message: "item deleted" });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -59,7 +48,7 @@ router.delete("/delete/:id", async (req, res) => {
 
 router.post("/delete/multiple", async (req, res) => {
   try {
-    await Borrow.deleteMany({
+    await Inventory.deleteMany({
       _id: { $in: req.body.toDelete },
     });
     res.json({ message: "successfully deleted" });

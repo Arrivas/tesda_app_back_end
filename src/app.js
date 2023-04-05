@@ -11,6 +11,8 @@ app.use(cors());
 const userRoute = require("../controller/user");
 const authRoute = require("../controller/auth");
 const borrowRoute = require("../controller/borrow");
+const inventoryRoute = require("../controller/inventory");
+const imageRoute = require("../controller/image");
 
 // user
 app.use("/user", userRoute);
@@ -20,6 +22,12 @@ app.use("/auth", authRoute);
 
 // borrow
 app.use("/borrow", borrowRoute);
+
+// inventory
+app.use("/inventory", inventoryRoute);
+
+// image
+app.use("/images", imageRoute);
 
 app.get("/", (req, res) => {
   res.json("hello from tesda back-end");
