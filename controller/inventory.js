@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Inventory = require("../models/inventoryModel");
+const Image = require("../models/imageModel");
 
 router.get("/get/all", async (req, res) => {
   try {
@@ -21,6 +22,16 @@ router.get("/get/one/:id", async (req, res) => {
 
 router.post("/new", async (req, res) => {
   try {
+    const { propertyNo } = req.body;
+    const existingInventory = await Inventory.findOne({ propertyNo });
+
+    if (existingInventory) {
+      res.status(400).json({
+        message: `inventory with ${propertyNo} already exists`,
+      });
+      return;
+    }
+
     const newInventory = await Inventory.create(req.body);
     res.json(newInventory);
   } catch (error) {
@@ -50,6 +61,9 @@ router.post("/delete/multiple", async (req, res) => {
   try {
     await Inventory.deleteMany({
       _id: { $in: req.body.toDelete },
+    });
+    await Image.deleteMany({
+      _id: { $in: req.body.toDeleteImg },
     });
     res.json({ message: "successfully deleted" });
   } catch (error) {

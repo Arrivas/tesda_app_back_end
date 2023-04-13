@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Borrow = require("../models/borrowModel");
+const Image = require("../models/imageModel");
 
 router.get("/get/all", async (req, res) => {
   try {
@@ -61,6 +62,9 @@ router.post("/delete/multiple", async (req, res) => {
   try {
     await Borrow.deleteMany({
       _id: { $in: req.body.toDelete },
+    });
+    await Image.deleteMany({
+      _id: { $in: req.body.toDeleteImg },
     });
     res.json({ message: "successfully deleted" });
   } catch (error) {

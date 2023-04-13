@@ -22,7 +22,6 @@ const inventorySchema = new Schema(
       type: String,
       required: [true, "qty is a required field"],
     },
-
     image: {
       imageUrl: {
         type: String,
@@ -30,6 +29,10 @@ const inventorySchema = new Schema(
       _id: {
         type: String,
       },
+    },
+    docType: {
+      type: String,
+      required: [true, "docType is a required field"],
     },
   },
 

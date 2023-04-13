@@ -64,4 +64,23 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/url/:id", async (req, res) => {
+  try {
+    const image = await Image.findById(req.params.id);
+
+    if (!image) {
+      res.status(404).send("Image not found");
+    } else {
+      res.set("Content-Type", image.contentType);
+      const imageUrl = `${req.protocol}://${req.get("host")}/images/${
+        req.params.id
+      }`;
+      res.send(imageUrl);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error fetching image");
+  }
+});
+
 module.exports = router;
