@@ -71,4 +71,44 @@ router.post("/delete/multiple", async (req, res) => {
   }
 });
 
+router.post("/get/stats", async (req, res) => {
+  try {
+    const inventoryAll = await Inventory.find({});
+    const year = req.body.year;
+    const filteredObjectsByMonth = [];
+
+    for (let monthNumber = 1; monthNumber <= 12; monthNumber++) {
+      const monthName = new Date(`${monthNumber} 1, ${year}`).toLocaleString(
+        "default",
+        { month: "long" }
+      );
+      const filteredObjects = inventoryAll.filter((obj) => {
+        const purchaseDate = new Date(obj.purchaseDate);
+        return (
+          purchaseDate.getMonth() + 1 === monthNumber &&
+          purchaseDate.getFullYear() === year
+        );
+      });
+
+      const sspCount = filteredObjects.filter(
+        (obj) => obj.docType === "ssp"
+      ).length;
+
+      const inventory101Count = filteredObjects.filter(
+        (obj) => obj.docType === "101"
+      ).length;
+
+      filteredObjectsByMonth.push({
+        month: monthName,
+        total: filteredObjects.length,
+        ssp: sspCount,
+        101: inventory101Count,
+      });
+    }
+    res.json(filteredObjectsByMonth);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

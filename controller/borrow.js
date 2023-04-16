@@ -72,4 +72,52 @@ router.post("/delete/multiple", async (req, res) => {
   }
 });
 
+router.post("/get/stats", async (req, res) => {
+  try {
+    const borrowAll = await Borrow.find({});
+    const year = req.body.year;
+    const filteredObjectsByMonth = [];
+
+    for (let monthNumber = 1; monthNumber <= 12; monthNumber++) {
+      const monthName = new Date(`${monthNumber} 1, ${year}`).toLocaleString(
+        "default",
+        { month: "long" }
+      );
+      const filteredObjects = borrowAll.filter((obj) => {
+        const createdAt = new Date(obj.createdAt);
+        return (
+          createdAt.getMonth() + 1 === monthNumber &&
+          createdAt.getFullYear() === year
+        );
+      });
+      const serviceableCount = filteredObjects.filter(
+        (obj) => obj.condition === "Serviceable"
+      ).length;
+      const unserviceableCount = filteredObjects.filter(
+        (obj) => obj.condition === "Unserviceable"
+      ).length;
+      const returnsCount = filteredObjects.filter(
+        (obj) => obj.isBorrowed === false
+      ).length;
+
+      filteredObjectsByMonth.push({
+        month: monthName,
+        // objects: filteredObjects.map((obj) => ({
+        //   condition: obj.condition,
+        //   _id: obj._id,
+        //   propertyNo: obj.propertyNo,
+        //   equipment: obj.equipment,
+        // })),
+        borrows: filteredObjects.length,
+        serviceable: serviceableCount,
+        unserviceable: -unserviceableCount,
+        returns: returnsCount,
+      });
+    }
+    res.json(filteredObjectsByMonth);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;
