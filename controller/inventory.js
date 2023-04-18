@@ -103,6 +103,16 @@ router.post("/get/stats", async (req, res) => {
         total: filteredObjects.length,
         ssp: sspCount,
         101: inventory101Count,
+        objects: filteredObjects.map((obj) => ({
+          condition: obj.condition,
+          _id: obj._id,
+          qty: obj.qty,
+          equipment: obj.equipment,
+          receiver: obj.receiveBy,
+          propertyNo: obj.propertyNo,
+          equipment: obj.equipment,
+          type: obj.docType,
+        })),
       });
     }
     res.json(filteredObjectsByMonth);

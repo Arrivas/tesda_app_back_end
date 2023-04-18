@@ -102,12 +102,15 @@ router.post("/get/stats", async (req, res) => {
 
       filteredObjectsByMonth.push({
         month: monthName,
-        // objects: filteredObjects.map((obj) => ({
-        //   condition: obj.condition,
-        //   _id: obj._id,
-        //   propertyNo: obj.propertyNo,
-        //   equipment: obj.equipment,
-        // })),
+        objects: filteredObjects.map((obj) => ({
+          condition: obj.condition,
+          _id: obj._id,
+          propertyNo: obj.propertyNo,
+          equipment: obj.equipment,
+          return: obj.isBorrowed ? "borrowed" : "returned",
+          location: obj.location,
+          borrowerName: obj.fullName,
+        })),
         borrows: filteredObjects.length,
         serviceable: serviceableCount,
         unserviceable: -unserviceableCount,
