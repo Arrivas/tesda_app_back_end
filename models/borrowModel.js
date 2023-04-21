@@ -54,6 +54,7 @@ const borrowSchema = new Schema(
       type: String,
       required: [true, "specificLocation is a required field"],
     },
+
     image: {
       imageUrl: {
         type: String,

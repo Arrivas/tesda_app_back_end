@@ -22,6 +22,17 @@ const inventorySchema = new Schema(
       type: String,
       required: [true, "qty is a required field"],
     },
+    classification: {
+      type: String,
+      required: [true, "classification is a required field"],
+    },
+    amount: {
+      type: Number,
+      required: [true, "amount is a required field"],
+    },
+    unit: {
+      type: String,
+    },
     image: {
       imageUrl: {
         type: String,
