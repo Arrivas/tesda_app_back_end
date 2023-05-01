@@ -123,4 +123,26 @@ router.post("/get/stats", async (req, res) => {
   }
 });
 
+router.get("/get/reminder", async (req, res) => {
+  try {
+    const borrowAll = await Borrow.find({});
+    const pastDues = [];
+    borrowAll.forEach((item) => {
+      if (item.isBorrowed && new Date() > new Date(item.dateReturn))
+        pastDues.push({
+          _id: item._id,
+          propertyNo: item.propertyNo,
+          borrowerName: item.fullName,
+          equipment: item.equipment,
+          role: item.role,
+          qty: item.qty,
+          dateReturn: item.dateReturn,
+        });
+    });
+    res.status(200).json(pastDues);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

@@ -112,6 +112,9 @@ router.post("/get/stats", async (req, res) => {
           propertyNo: obj.propertyNo,
           equipment: obj.equipment,
           type: obj.docType,
+          unit: obj.unit,
+          amount: obj.amount,
+          classification: obj.classification,
         })),
       });
     }
