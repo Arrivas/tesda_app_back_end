@@ -26,6 +26,9 @@ const inventorySchema = new Schema(
       type: String,
       required: [true, "classification is a required field"],
     },
+    specification: {
+      type: String,
+    },
     amount: {
       type: Number,
       required: [true, "amount is a required field"],

@@ -107,6 +107,7 @@ router.post("/get/stats", async (req, res) => {
           condition: obj.condition,
           _id: obj._id,
           qty: obj.qty,
+          specification: obj.specification,
           equipment: obj.equipment,
           receiver: obj.receiveBy,
           propertyNo: obj.propertyNo,
