@@ -26,13 +26,9 @@ const borrowSchema = new Schema(
       type: Number,
       required: [true, "qty is a required field"],
     },
-    purpose: {
+    intention: {
       type: String,
-      required: [true, "purpose is a required field"],
-    },
-    condition: {
-      type: String,
-      required: [true, "condition is a required field"],
+      required: [true, "intention is a required field"],
     },
     role: {
       type: String,
@@ -52,7 +48,6 @@ const borrowSchema = new Schema(
     },
     specificLocation: {
       type: String,
-      required: [true, "specificLocation is a required field"],
     },
 
     image: {

@@ -18,6 +18,10 @@ const inventorySchema = new Schema(
       type: String,
       required: [true, "qty is a required field"],
     },
+    condition: {
+      type: String,
+      required: [true, "condition is a required field"],
+    },
     receiveBy: {
       type: String,
       required: [true, "qty is a required field"],

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Borrow = require("../models/borrowModel");
 const Image = require("../models/imageModel");
+const Inventory = require("../models/inventoryModel");
 
 router.get("/get/all", async (req, res) => {
   try {
@@ -90,12 +91,7 @@ router.post("/get/stats", async (req, res) => {
           createdAt.getFullYear() === year
         );
       });
-      const serviceableCount = filteredObjects.filter(
-        (obj) => obj.condition === "Serviceable"
-      ).length;
-      const unserviceableCount = filteredObjects.filter(
-        (obj) => obj.condition === "Unserviceable"
-      ).length;
+
       const returnsCount = filteredObjects.filter(
         (obj) => obj.isBorrowed === false
       ).length;
@@ -103,17 +99,16 @@ router.post("/get/stats", async (req, res) => {
       filteredObjectsByMonth.push({
         month: monthName,
         objects: filteredObjects.map((obj) => ({
-          condition: obj.condition,
           _id: obj._id,
           propertyNo: obj.propertyNo,
           equipment: obj.equipment,
           return: obj.isBorrowed ? "borrowed" : "returned",
           location: obj.location,
+          intention: obj.intention,
           borrowerName: obj.fullName,
         })),
         borrows: filteredObjects.length,
-        serviceable: serviceableCount,
-        unserviceable: -unserviceableCount,
+
         returns: returnsCount,
       });
     }
@@ -136,6 +131,7 @@ router.get("/get/reminder", async (req, res) => {
           equipment: item.equipment,
           role: item.role,
           qty: item.qty,
+          intention: item.intention,
           dateReturn: item.dateReturn,
         });
     });
@@ -143,6 +139,35 @@ router.get("/get/reminder", async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+});
+
+router.get("/get/search", async (req, res) => {
+  try {
+    const inventoryAll = await Inventory.find({});
+    const filteredInventory = inventoryAll.filter((item) => {
+      if (
+        item.propertyNo.startsWith(req.query.q) &&
+        item.condition === "Serviceable"
+      )
+        return item;
+    });
+
+    res.json(filteredInventory);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.put("/returned/:id", async (req, res) => {
+  await Borrow.findById(req.params.id)
+    .exec()
+    .then(async (data) => {
+      const currentBorrow = data;
+      currentBorrow.isBorrowed = false;
+      await Borrow.findByIdAndUpdate(req.params.id, currentBorrow);
+      return res.status(200).json(currentBorrow);
+    })
+    .catch((error) => res.status(500).json({ message: error.message }));
 });
 
 module.exports = router;

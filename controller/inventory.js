@@ -89,6 +89,12 @@ router.post("/get/stats", async (req, res) => {
           purchaseDate.getFullYear() === year
         );
       });
+      const serviceableCount = filteredObjects.filter(
+        (obj) => obj.condition === "Serviceable"
+      ).length;
+      const unserviceableCount = filteredObjects.filter(
+        (obj) => obj.condition === "Unserviceable"
+      ).length;
 
       const sspCount = filteredObjects.filter(
         (obj) => obj.docType === "ssp"
@@ -103,6 +109,8 @@ router.post("/get/stats", async (req, res) => {
         total: filteredObjects.length,
         ssp: sspCount,
         101: inventory101Count,
+        serviceable: serviceableCount,
+        unserviceable: -unserviceableCount,
         objects: filteredObjects.map((obj) => ({
           condition: obj.condition,
           _id: obj._id,
