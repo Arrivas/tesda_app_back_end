@@ -164,6 +164,7 @@ router.put("/returned/:id", async (req, res) => {
     .then(async (data) => {
       const currentBorrow = data;
       currentBorrow.isBorrowed = false;
+      if (req.body.activemode) currentBorrow.condition = req.body.activemode;
       await Borrow.findByIdAndUpdate(req.params.id, currentBorrow);
       return res.status(200).json(currentBorrow);
     })
