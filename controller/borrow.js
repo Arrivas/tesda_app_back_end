@@ -106,6 +106,7 @@ router.post("/get/stats", async (req, res) => {
           location: obj.location,
           intention: obj.intention,
           borrowerName: obj.fullName,
+          condition: obj.condition,
         })),
         borrows: filteredObjects.length,
 
@@ -133,6 +134,7 @@ router.get("/get/reminder", async (req, res) => {
           qty: item.qty,
           intention: item.intention,
           dateReturn: item.dateReturn,
+          condition: item.condition,
         });
     });
     res.status(200).json(pastDues);
