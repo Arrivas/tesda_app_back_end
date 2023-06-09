@@ -104,7 +104,7 @@ router.post("/get/stats", async (req, res) => {
           equipment: obj.equipment,
           return: obj.isBorrowed ? "borrowed" : "returned",
           location: obj.location,
-          intention: obj.intention,
+          purpose: obj.purpose,
           borrowerName: obj.fullName,
           condition: obj.condition,
         })),
@@ -132,7 +132,7 @@ router.get("/get/reminder", async (req, res) => {
           equipment: item.equipment,
           role: item.role,
           qty: item.qty,
-          intention: item.intention,
+          purpose: item.purpose,
           dateReturn: item.dateReturn,
           condition: item.condition,
         });

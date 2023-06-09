@@ -26,9 +26,9 @@ const borrowSchema = new Schema(
       type: Number,
       required: [true, "qty is a required field"],
     },
-    intention: {
+    purpose: {
       type: String,
-      required: [true, "intention is a required field"],
+      required: false,
     },
     role: {
       type: String,
