@@ -148,7 +148,7 @@ router.get("/get/search", async (req, res) => {
     const inventoryAll = await Inventory.find({});
     const filteredInventory = inventoryAll.filter((item) => {
       if (
-        item.propertyNo.includes(req.query.q) &&
+        item.propertyNo.toLowerCase().includes(req.query.q.toLowerCase()) &&
         item.condition === "Serviceable"
       )
         return item;
