@@ -148,7 +148,7 @@ router.get("/get/search", async (req, res) => {
     const inventoryAll = await Inventory.find({});
     const filteredInventory = inventoryAll.filter((item) => {
       if (
-        item.propertyNo.toLowerCase().includes(req.query.q.toLowerCase()) &&
+        item.equipment.toLowerCase().includes(req.query.q.toLowerCase()) &&
         item.condition === "Serviceable"
       )
         return item;
@@ -159,6 +159,23 @@ router.get("/get/search", async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+// router.get("/get/search", async (req, res) => {
+//   try {
+//     const inventoryAll = await Inventory.find({});
+//     const filteredInventory = inventoryAll.filter((item) => {
+//       if (
+//         item.propertyNo.toLowerCase().includes(req.query.q.toLowerCase()) &&
+//         item.condition === "Serviceable"
+//       )
+//         return item;
+//     });
+
+//     res.json(filteredInventory);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// });
 
 router.put("/returned/:id", async (req, res) => {
   await Borrow.findById(req.params.id)

@@ -49,6 +49,9 @@ const borrowSchema = new Schema(
     specificLocation: {
       type: String,
     },
+    specificLocationOutside: {
+      type: String,
+    },
     condition: {
       type: String,
     },
