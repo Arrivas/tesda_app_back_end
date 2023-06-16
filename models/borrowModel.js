@@ -52,6 +52,9 @@ const borrowSchema = new Schema(
     condition: {
       type: String,
     },
+    purposeOthers: {
+      type: String,
+    },
 
     image: {
       imageUrl: {
